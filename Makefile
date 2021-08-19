@@ -20,6 +20,9 @@ invoke-local-create-book: stack-build
 invoke-local-delete-book: stack-build
 	sam local invoke DeleteBookFunction -e events/delete_book.json
 
+test:
+	AWS_ENDPOINT_URL=http://172.17.0.1:8080; pytest tests
+
 dynamo-create-table:
 	aws dynamodb create-table --endpoint-url http://localhost:8080 --table-name books --key-schema AttributeName=author,KeyType=HASH AttributeName=title,KeyType=RANGE --attribute-definitions AttributeName=author,AttributeType=S AttributeName=title,AttributeType=S --billing-mode PAY_PER_REQUEST
 
