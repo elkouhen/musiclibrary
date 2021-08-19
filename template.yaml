@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Serverless Specification template describing your function.
+Resources:
+
+  Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: books
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: author
+          KeyType: HASH
+        - AttributeName: title
+          KeyType: RANGE
+      AttributeDefinitions:
+        - AttributeName: author
+          AttributeType: S
+        - AttributeName: title
+          AttributeType: S
+
+
+  CreateBookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'bookshelf-create-book-fct'
+      Handler: src.bookshelf.handler.create_book
+      Runtime: python3.7
+
+  DeleteBookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'bookshelf-delete-book-fct'
+      Handler: src.bookshelf.handler.delete_book
+      Runtime: python3.7

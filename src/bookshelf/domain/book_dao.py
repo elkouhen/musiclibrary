@@ -1,4 +1,4 @@
-from src.bookshelf.book import Book
+from src.bookshelf.domain.book import Book
 
 
 class BookDao:
@@ -31,11 +31,16 @@ class BookDao:
         self.table.update_item(
             Key={"author": book.author, "title": book.title},
             UpdateExpression="SET genre = :val1, publication_date = :val2",
-            ExpressionAttributeValues={":val1": book.genre, ":val2": book.publication_date},
+            ExpressionAttributeValues={
+                ":val1": book.genre,
+                ":val2": book.publication_date,
+            },
         )
 
     def find_book(self, book: Book) -> Book:
-        return self.table.get_item(Key={"author": book.author, "title": book.title})['Item']
+        book = self.table.get_item(Key={"author": book.author, "title": book.title})
+        print(book)
+        return book["Item"]
 
     def delete_book(self, book: Book) -> None:
         self.table.delete_item(Key={"author": book.author, "title": book.title})
