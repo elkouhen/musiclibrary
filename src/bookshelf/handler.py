@@ -13,7 +13,7 @@ def create_book(event, context):
     )
     book_dao.create_book(book)
 
-def delete(event, context):
+def delete_book(event, context):
     book = Book(title=event["title"], author=event["author"])
     book_dao = BookDao(
         dynamodb_resource=dynamodb_resource, dynamodb_client=dynamodb_client

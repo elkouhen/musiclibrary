@@ -1,3 +1,7 @@
+.aws-sam
+packaged.yaml
+
+
 # Temporary and binary files
 *~
 *.py[cod]
