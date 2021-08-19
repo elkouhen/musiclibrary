@@ -5,20 +5,29 @@ STAGE = develop
 PIP = .venv/bin/pip
 
 stack-build:
-	sam build --debug
-	sam package --s3-bucket cicd-bucket-2020 --output-template-file packaged.yaml
+	sam build --region $(AWS_REGION)
 
-stack-deploy: build
-	sam deploy packaged.yaml --stack-name $(STACK_NAME)
+stack-deploy: stack-build
+	sam package --s3-bucket cicd-bucket-2020 --output-template-file packaged.yaml
+	sam deploy packaged.yaml --stack-name $(STACK_NAME) --region $(AWS_REGION)
 
 stack-delete:
-	aws cloudformation delete-stack --stack-name $(STACK_NAME)
+	aws cloudformation delete-stack --stack-name $(STACK_NAME) --region $(AWS_REGION)
 
-invoke-local-create-book:
+invoke-local-create-book: stack-build
 	sam local invoke CreateBookFunction -e events/create_book.json
 
-invoke-local-delete-book:
+invoke-local-delete-book: stack-build
 	sam local invoke DeleteBookFunction -e events/delete_book.json
+
+dynamo-create-table:
+	aws dynamodb create-table --endpoint-url http://localhost:8080 --table-name books --key-schema AttributeName=author,KeyType=HASH AttributeName=title,KeyType=RANGE --attribute-definitions AttributeName=author,AttributeType=S AttributeName=title,AttributeType=S --billing-mode PAY_PER_REQUEST
+
+dynamodb-start:
+	docker run --name dynamodb-shared -p 8080:8000 -d amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath .
+
+dynamodb-stop:
+	docker rm -f dynamodb-shared
 
 bootstrap: .venv
 	$(PIP) install -e .
