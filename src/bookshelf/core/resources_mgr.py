@@ -18,11 +18,9 @@ class ResourcesMgr:
 
     def __init__(self):
 
-
-        if "AWS_ENDPOINT_URL" in os.environ:
+        if "AWS_SAM_LOCAL" in os.environ:
             print("local aws resources")
-            print(os.environ['AWS_ENDPOINT_URL'])
-            endpoint_url = os.environ['AWS_ENDPOINT_URL']
+            endpoint_url = "http://172.17.0.1:8080"
             self.dynamodb_resource = boto3.resource("dynamodb", endpoint_url=f"http://{endpoint_url}")
             self.dynamodb_client = boto3.client("dynamodb", endpoint_url=f"http://{endpoint_url}")
         else:
