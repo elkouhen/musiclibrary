@@ -18,6 +18,7 @@
 boto3
 mypy
 pytest
+pytest-cov
 pre-commit
 types-setuptools
 boto3-stubs[essential]

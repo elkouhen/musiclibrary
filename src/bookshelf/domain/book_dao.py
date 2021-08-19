@@ -38,9 +38,11 @@ class BookDao:
         )
 
     def find_book(self, book: Book) -> Book:
-        book = self.table.get_item(Key={"author": book.author, "title": book.title})
-        print(book)
-        return book["Item"]
+        result = self.table.get_item(Key={"author": book.author, "title": book.title})
+
+        print(result)
+
+        return result["Item"] if "Item" in result else None
 
     def delete_book(self, book: Book) -> None:
         self.table.delete_item(Key={"author": book.author, "title": book.title})
