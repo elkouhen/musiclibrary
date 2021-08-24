@@ -25,10 +25,10 @@ class BookDao:
             BillingMode="PAY_PER_REQUEST",
         )
 
-    def create_book(self, book: Book) -> None:
+    def create(self, book: Book) -> None:
         self.table.put_item(Item=book.to_dict())
 
-    def update_book(self, book: Book) -> None:
+    def update(self, book: Book) -> None:
         self.table.update_item(
             Key={"author": book.author, "title": book.title},
             UpdateExpression="SET genre = :val1, publication_date = :val2",
@@ -38,7 +38,7 @@ class BookDao:
             },
         )
 
-    def find_book(self, book: Book) -> Book:
+    def find_by_author_and_title(self, book: Book) -> Book:
         result = self.table.get_item(Key={"author": book.author, "title": book.title})
 
         print(result)
@@ -46,25 +46,22 @@ class BookDao:
         return result["Item"] if "Item" in result else None
 
     def find_by_author_and_genre(self, author, genre) -> Book:
-        print(author)
-        print(genre)
         result = self.table.query(
             IndexName="author-genre",
             KeyConditionExpression=Key("author").eq(author) & Key("genre").eq(genre),
         )
 
-        print(result)
+        assert len(result["Items"]) <= 1
+        return result["Items"][0] if len(result["Items"]) == 1 else None
 
-        return result["Items"][0] if "Items" in result else None
-
-    def find_book_by_author_and_publication(self, author, publication) -> Book:
-        result = self.table.get_item(
-            Key={"author": book.author, "publication": publication}
+    def find_by_genre_and_publication_date(self, genre, publication_date) -> Book:
+        result = self.table.query(
+            IndexName="genre-publication",
+            KeyConditionExpression=Key("genre").eq(genre) & Key("publication_date").eq(publication_date),
         )
 
-        print(result)
+        assert len(result["Items"]) <= 1
+        return result["Items"][0] if len(result["Items"]) == 1 else None
 
-        return result["Item"] if "Item" in result else None
-
-    def delete_book(self, book: Book) -> None:
+    def delete(self, book: Book) -> None:
         self.table.delete_item(Key={"author": book.author, "title": book.title})
