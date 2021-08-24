@@ -21,7 +21,7 @@ invoke-local-delete-book: stack-build
 	sam local invoke DeleteBookFunction -e events/delete_book.json
 
 test:
-	AWS_SAM_LOCAL=True; pytest tests
+	UNIT_TEST=True; pytest tests
 
 test-remote:
 	pytest tests

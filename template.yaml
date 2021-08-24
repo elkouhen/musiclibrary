@@ -47,6 +47,9 @@ Resources:
       FunctionName: !Sub 'bookshelf-create-book-fct'
       Handler: src.bookshelf.handler.create_book
       Runtime: python3.7
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: books
 
   DeleteBookFunction:
     Type: AWS::Serverless::Function

@@ -20,9 +20,16 @@ def singleton(class_):
 class ResourcesMgr:
     def __init__(self):
 
-        print(os.environ.get("AWS_SAM_LOCAL"))
-
         if os.environ.get("AWS_SAM_LOCAL") is not None:
+            logger.info("docker aws resources")
+            endpoint_url = "http://172.17.0.1:8080"
+            self.dynamodb_resource = boto3.resource(
+                "dynamodb", endpoint_url=f"{endpoint_url}"
+            )
+            self.dynamodb_client = boto3.client(
+                "dynamodb", endpoint_url=f"{endpoint_url}"
+            )
+        elif os.environ.get("UNIT_TEST") is not None:
             logger.info("local aws resources")
             endpoint_url = "http://localhost:8080"
             self.dynamodb_resource = boto3.resource(
