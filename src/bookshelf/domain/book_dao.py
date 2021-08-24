@@ -59,16 +59,17 @@ class BookDao:
             KeyConditionExpression=Key("author").eq(author) & Key("genre").eq(genre),
         )
 
-        assert len(result["Items"]) <= 1
-        return result["Items"][0] if len(result["Items"]) == 1 else None
+        return result["Items"]
 
     def find_by_genre_and_publication_date(self, genre, publication_date) -> Book:
-        logger.info("[book] find_by_genre_and_publication_date")
+        print(
+            f"[book] find_by_genre_and_publication_date genre={genre} publication_date={publication_date}"
+        )
+
         result = self.table.query(
             IndexName="genre-publication",
             KeyConditionExpression=Key("genre").eq(genre)
             & Key("publication_date").eq(publication_date),
         )
 
-        assert len(result["Items"]) <= 1
-        return result["Items"][0] if len(result["Items"]) == 1 else None
+        return result["Items"]
