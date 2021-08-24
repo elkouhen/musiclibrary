@@ -58,7 +58,7 @@ def find_books(event, context):
         dynamodb_client=resources_mgr.dynamodb_client,
     )
 
-    books = book_dao.find_by_genre_and_publication_date(event["queryParameters"]["genre"], event["queryParameters"]["publication_date"])
+    books = book_dao.find_by_genre_and_publication_date(event["queryStringParameters"]["genre"], event["queryStringParameters"]["publication_date"])
 
     return {
         "statusCode": 200,
