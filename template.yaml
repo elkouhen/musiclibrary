@@ -3,6 +3,41 @@ Transform: 'AWS::Serverless-2016-10-31'
 Description: An AWS Serverless Specification template describing your function.
 Resources:
 
+  # An API definition for multiple serverless functions
+  DefaultApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: develop
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: !Sub s3://cicd-bucket-eu-west-3/spec/api-spec.yaml
+
+  CreateBookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'bookshelf-create-book-fct'
+      Handler: src.bookshelf.handler.create_book
+      Runtime: python3.7
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: books
+      Events:
+        CreateBook:
+          Type: Api
+          Properties:
+            RestApiId: !Ref DefaultApi
+            Path: /books
+            Method: POST
+
+  DeleteBookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'bookshelf-delete-book-fct'
+      Handler: src.bookshelf.handler.delete_book
+      Runtime: python3.7
+
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -41,19 +76,3 @@ Resources:
           Projection:
             ProjectionType: ALL
 
-  CreateBookFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'bookshelf-create-book-fct'
-      Handler: src.bookshelf.handler.create_book
-      Runtime: python3.7
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: books
-
-  DeleteBookFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'bookshelf-delete-book-fct'
-      Handler: src.bookshelf.handler.delete_book
-      Runtime: python3.7

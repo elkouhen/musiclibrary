@@ -1,3 +1,6 @@
+import json
+
+
 class Book:
     def __init__(self, **kwargs) -> None:
         self.author = kwargs["author"]
@@ -9,6 +12,9 @@ class Book:
 
     def to_dict(self):
         return self.__dict__
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, Book):

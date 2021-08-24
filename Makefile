@@ -8,6 +8,7 @@ stack-build:
 	sam build --region $(AWS_REGION) --use-container
 
 stack-deploy: stack-build
+	aws s3 cp spec/api-spec.yaml s3://$(CICD_BUCKET)/spec/api-spec.yaml
 	sam package --s3-bucket $(CICD_BUCKET) --output-template-file packaged.yaml
 	sam deploy packaged.yaml --capabilities CAPABILITY_IAM --s3-bucket $(CICD_BUCKET) --stack-name $(STACK_NAME) --region $(AWS_REGION)
 

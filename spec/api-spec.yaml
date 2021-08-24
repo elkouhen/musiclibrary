@@ -1,0 +1,41 @@
+openapi: "3.0.1"
+info:
+  version: "1"
+  title: "Bookshelf documentation"
+
+paths:
+  /books:
+    post:
+      summary: "Create a book"
+      responses:
+        201:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 201
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateBookFunction.Arn}/invocations"
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: aws_proxy
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        author:
+          type: string
+        title:
+          type: string
+        genre:
+          type: string
+        publication_date:
+          type: string
