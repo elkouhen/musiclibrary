@@ -1,7 +1,7 @@
 from src.bookshelf.domain.book_dao import BookDao
 from src.bookshelf.domain.book import Book
 from src.bookshelf.core.resources_mgr import ResourcesMgr
-import boto3
+
 import logging
 import json
 
@@ -30,7 +30,7 @@ def create_book(event, context):
     return {
         "statusCode": 201,
         "headers": {"Content-Type": "application/json"},
-        "body": book.toJSON(),
+        "body": book.to_json(),
     }
 
 

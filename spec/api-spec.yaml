@@ -5,6 +5,35 @@ info:
 
 paths:
   /books:
+    get:
+      summary: "Find books"
+      parameters:
+        - in: query
+          name: genre
+          schema: 
+            type: string
+        - in: query
+          name: publication_date
+          schema: 
+            type: string           
+      responses: 
+         200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookList"
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateBookFunction.Arn}/invocations"
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: aws_proxy      
     post:
       summary: "Create a book"
       responses:
@@ -25,12 +54,39 @@ paths:
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: aws_proxy
+  /books/{book_index}:
+    delete: 
+      summary: "Delete a book"
+      responses:
+        204:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 204
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteBookFunction.Arn}/invocations"
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: aws_proxy
 
 components:
   schemas:
+    BookList: 
+      type: array
+      items:
+        $ref: '#/components/schemas/Book'
     Book:
       type: object
       properties:
+        id: 
+          type: string
         author:
           type: string
         title:
@@ -39,3 +95,5 @@ components:
           type: string
         publication_date:
           type: string
+    Empty: 
+      type: object

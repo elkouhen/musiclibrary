@@ -1,5 +1,5 @@
 AWS_REGION = eu-west-3
-STACK_NAME = bookshelf
+STACK_NAME = bookshelf-v2
 CICD_BUCKET = cicd-bucket-eu-west-3
 
 PIP = .venv/bin/pip

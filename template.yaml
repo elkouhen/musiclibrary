@@ -37,6 +37,16 @@ Resources:
       FunctionName: !Sub 'bookshelf-delete-book-fct'
       Handler: src.bookshelf.handler.delete_book
       Runtime: python3.7
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: books
+      Events:
+        CreateBook:
+          Type: Api
+          Properties:
+            RestApiId: !Ref DefaultApi
+            Path: /books/{book_index}
+            Method: DELETE
 
   Table:
     Type: AWS::DynamoDB::Table
@@ -57,6 +67,8 @@ Resources:
           AttributeType: S
         - AttributeName: publication_date
           AttributeType: S
+        - AttributeName: uid
+          AttributeType: S
       LocalSecondaryIndexes:
         - IndexName: author-genre
           KeySchema:
@@ -75,4 +87,9 @@ Resources:
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
-
+        - IndexName: uid
+          KeySchema:
+            - AttributeName: uid
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL

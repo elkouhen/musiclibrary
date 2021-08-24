@@ -11,23 +11,6 @@ class BookDao:
         self.dynamodb_client = dynamodb_client
         self.table = self.dynamodb_resource.Table("books")
 
-    def delete_table(self):
-        self.dynamodb_client.delete_table(TableName="books")
-
-    def create_table(self):
-        self.dynamodb_client.create_table(
-            TableName="books",
-            KeySchema=[
-                {"AttributeName": "author", "KeyType": "HASH"},
-                {"AttributeName": "title", "KeyType": "RANGE"},
-            ],
-            AttributeDefinitions=[
-                {"AttributeName": "author", "AttributeType": "S"},
-                {"AttributeName": "title", "AttributeType": "S"},
-            ],
-            BillingMode="PAY_PER_REQUEST",
-        )
-
     def create(self, book: Book) -> None:
         logger.info("[book] create")
         self.table.put_item(Item=book.to_dict())
@@ -66,7 +49,7 @@ class BookDao:
         result = self.table.query(
             IndexName="genre-publication",
             KeyConditionExpression=Key("genre").eq(genre)
-            & Key("publication_date").eq(publication_date),
+                                   & Key("publication_date").eq(publication_date),
         )
 
         assert len(result["Items"]) <= 1
