@@ -63,5 +63,5 @@ def find_books(event, context):
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "application/json"},
-        "body": [],
+        "body": json.dumps(books),
     }
