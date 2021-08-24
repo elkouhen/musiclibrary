@@ -18,7 +18,28 @@ Resources:
           AttributeType: S
         - AttributeName: title
           AttributeType: S
-
+        - AttributeName: genre
+          AttributeType: S
+        - AttributeName: publication_date
+          AttributeType: S
+      LocalSecondaryIndexes:
+        - IndexName: author-genre
+          KeySchema:
+            - AttributeName: author
+              KeyType: HASH
+            - AttributeName: genre
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      GlobalSecondaryIndexes:
+        - IndexName: genre-publication
+          KeySchema:
+            - AttributeName: genre
+              KeyType: HASH
+            - AttributeName: publication_date
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
 
   CreateBookFunction:
     Type: AWS::Serverless::Function

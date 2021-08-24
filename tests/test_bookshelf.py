@@ -9,29 +9,34 @@ resources_mgr = ResourcesMgr()
 
 
 class TestBookDao:
-
     @classmethod
     def setup_class(cls):
-        book_dao = BookDao(dynamodb_resource=resources_mgr.dynamodb_resource,
-                           dynamodb_client=resources_mgr.dynamodb_client)
+        book_dao = BookDao(
+            dynamodb_resource=resources_mgr.dynamodb_resource,
+            dynamodb_client=resources_mgr.dynamodb_client,
+        )
 
-        book = Book(title="toto", author="toto")
+        book = Book(title="toto", author="toto", genre="SF", publication_date="1975")
 
         book_dao.create_book(book)
 
     @classmethod
     def teardown_class(cls):
-        book_dao = BookDao(dynamodb_resource=resources_mgr.dynamodb_resource,
-                           dynamodb_client=resources_mgr.dynamodb_client)
+        book_dao = BookDao(
+            dynamodb_resource=resources_mgr.dynamodb_resource,
+            dynamodb_client=resources_mgr.dynamodb_client,
+        )
 
         book = Book(title="toto", author="toto")
 
         book_dao.delete_book(book)
 
-    def test_find_book_when_it_exists(self):
+    def test_find_book_by_author_and_title_should_return_book_when_it_exists(self):
         # given
-        book_dao = BookDao(dynamodb_resource=resources_mgr.dynamodb_resource,
-                           dynamodb_client=resources_mgr.dynamodb_client)
+        book_dao = BookDao(
+            dynamodb_resource=resources_mgr.dynamodb_resource,
+            dynamodb_client=resources_mgr.dynamodb_client,
+        )
 
         book = Book(title="toto", author="toto")
 
@@ -41,10 +46,14 @@ class TestBookDao:
         # then
         assert abook is not None
 
-    def test_do_not_find_book_when_it_doesnot_exist(self):
+    def test_find_book_by_author_and_title_should_return_none_when_it_does_not_exist(
+        self,
+    ):
         # given
-        book_dao = BookDao(dynamodb_resource=resources_mgr.dynamodb_resource,
-                           dynamodb_client=resources_mgr.dynamodb_client)
+        book_dao = BookDao(
+            dynamodb_resource=resources_mgr.dynamodb_resource,
+            dynamodb_client=resources_mgr.dynamodb_client,
+        )
         book = Book(title="toto_ne_doit_pas_exister", author="toto_ne_doit_pas_exister")
 
         # when
@@ -52,3 +61,16 @@ class TestBookDao:
 
         # then
         assert abook is None
+
+    def test_find_book_by_author_and_genre_should_return_book_when_it_exists(self):
+        # given
+        book_dao = BookDao(
+            dynamodb_resource=resources_mgr.dynamodb_resource,
+            dynamodb_client=resources_mgr.dynamodb_client,
+        )
+
+        # when
+        abook = book_dao.find_by_author_and_genre(author="toto", genre="SF")
+
+        # then
+        assert abook is not None

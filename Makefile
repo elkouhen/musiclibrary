@@ -1,15 +1,15 @@
 AWS_REGION = eu-west-3
 STACK_NAME = bookshelf
-STAGE = develop
+CICD_BUCKET = cicd-bucket-eu-west-3
 
 PIP = .venv/bin/pip
 
 stack-build:
-	sam build --region $(AWS_REGION)
+	sam build --region $(AWS_REGION) --use-container
 
 stack-deploy: stack-build
-	sam package --s3-bucket cicd-bucket-2020 --output-template-file packaged.yaml
-	sam deploy packaged.yaml --stack-name $(STACK_NAME) --region $(AWS_REGION)
+	sam package --s3-bucket $(CICD_BUCKET) --output-template-file packaged.yaml
+	sam deploy packaged.yaml --capabilities CAPABILITY_IAM --s3-bucket $(CICD_BUCKET) --stack-name $(STACK_NAME) --region $(AWS_REGION)
 
 stack-delete:
 	aws cloudformation delete-stack --stack-name $(STACK_NAME) --region $(AWS_REGION)
@@ -22,6 +22,9 @@ invoke-local-delete-book: stack-build
 
 test:
 	AWS_SAM_LOCAL=True; pytest tests
+
+test-remote:
+	pytest tests
 
 dynamo-create-table:
 	aws dynamodb create-table --endpoint-url http://localhost:8080 --table-name books --key-schema AttributeName=author,KeyType=HASH AttributeName=title,KeyType=RANGE --attribute-definitions AttributeName=author,AttributeType=S AttributeName=title,AttributeType=S --billing-mode PAY_PER_REQUEST

@@ -7,7 +7,10 @@ from src.bookshelf.core.resources_mgr import ResourcesMgr
 print("create dynamodb resources")
 resources_mgr = ResourcesMgr()
 
-book_dao = BookDao(dynamodb_resource=resources_mgr.dynamodb_resource, dynamodb_client=resources_mgr.dynamodb_client)
+book_dao = BookDao(
+    dynamodb_resource=resources_mgr.dynamodb_resource,
+    dynamodb_client=resources_mgr.dynamodb_client,
+)
 book = Book(title="kkk", author="tootoot")
 
 # book_dao.create_table()
@@ -19,6 +22,6 @@ book_dao.find_book(book)
 book.genre = "tech"
 book.publication_date = "19-08-2021"
 book_dao.update_book(book)
-#book_dao.delete_book(book)
+# book_dao.delete_book(book)
 
 # book_dao.delete_table()

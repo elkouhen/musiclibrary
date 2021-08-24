@@ -10,7 +10,8 @@ resources_mgr = ResourcesMgr()
 def create_book(event, context):
     book = Book(title=event["title"], author=event["author"])
     book_dao = BookDao(
-        dynamodb_resource=resources_mgr.dynamodb_resource, dynamodb_client=resources_mgr.dynamodb_client
+        dynamodb_resource=resources_mgr.dynamodb_resource,
+        dynamodb_client=resources_mgr.dynamodb_client,
     )
     book_dao.create_book(book)
 
@@ -18,6 +19,7 @@ def create_book(event, context):
 def delete_book(event, context):
     book = Book(title=event["title"], author=event["author"])
     book_dao = BookDao(
-        dynamodb_resource=resources_mgr.dynamodb_resource, dynamodb_client=resources_mgr.dynamodb_client
+        dynamodb_resource=resources_mgr.dynamodb_resource,
+        dynamodb_client=resources_mgr.dynamodb_client,
     )
     book_dao.delete_book(book)
