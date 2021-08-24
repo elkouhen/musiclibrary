@@ -34,6 +34,3 @@ def delete_book(event, context):
     )
     book_dao.delete(book)
 
-
-def get_attr_or_empty(dict, key):
-    dict[key] if key in dict else ""
