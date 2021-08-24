@@ -15,6 +15,24 @@ class BookDao:
         logger.info("[book] create")
         self.table.put_item(Item=book.to_dict())
 
+    def delete(self, uuid) -> None:
+        logger.info("[book] delete")
+
+        result = self.table.query(
+            IndexName="uuid",
+            KeyConditionExpression=Key("uuid").eq(uuid),
+        )
+
+        assert len(result["Items"]) == 1
+
+        book = result["Items"][0]
+
+        print(book)
+
+        self.table.delete_item(Key={"author": book["author"], "title": book["title"]})
+
+        return None
+
     def update(self, book: Book) -> None:
         logger.info("[book] update")
         self.table.update_item(
@@ -54,7 +72,3 @@ class BookDao:
 
         assert len(result["Items"]) <= 1
         return result["Items"][0] if len(result["Items"]) == 1 else None
-
-    def delete(self, book: Book) -> None:
-        logger.info("[book] delete")
-        self.table.delete_item(Key={"author": book.author, "title": book.title})

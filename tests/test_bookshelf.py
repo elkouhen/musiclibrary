@@ -27,9 +27,9 @@ class TestBookDao:
             dynamodb_client=resources_mgr.dynamodb_client,
         )
 
-        book = Book(title="toto", author="toto")
+        abook = book_dao.find_by_author_and_title(Book(title="toto", author="toto"))
 
-        book_dao.delete(book)
+        book_dao.delete(abook["uuid"])
 
     def test_find_book_by_author_and_title_should_return_book_when_it_exists(self):
         # given
@@ -47,7 +47,7 @@ class TestBookDao:
         assert abook is not None
 
     def test_find_book_by_author_and_title_should_return_none_when_it_not_exist(
-        self,
+            self,
     ):
         # given
         book_dao = BookDao(
@@ -89,7 +89,7 @@ class TestBookDao:
         assert abook is None
 
     def test_find_book_by_author_and_publication_date_should_return_book_when_it_exists(
-        self,
+            self,
     ):
         # given
         book_dao = BookDao(
@@ -106,7 +106,7 @@ class TestBookDao:
         assert abook is not None
 
     def test_find_book_by_author_and_publication_date_should_return_none_when_it_not_exists(
-        self,
+            self,
     ):
         # given
         book_dao = BookDao(

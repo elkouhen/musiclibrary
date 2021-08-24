@@ -67,7 +67,7 @@ Resources:
           AttributeType: S
         - AttributeName: publication_date
           AttributeType: S
-        - AttributeName: uid
+        - AttributeName: uuid
           AttributeType: S
       LocalSecondaryIndexes:
         - IndexName: author-genre
@@ -87,9 +87,9 @@ Resources:
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
-        - IndexName: uid
+        - IndexName: uuid
           KeySchema:
-            - AttributeName: uid
+            - AttributeName: uuid
               KeyType: HASH
           Projection:
             ProjectionType: ALL

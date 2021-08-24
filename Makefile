@@ -1,5 +1,5 @@
 AWS_REGION = eu-west-3
-STACK_NAME = bookshelf-v2
+STACK_NAME = bookshelf
 CICD_BUCKET = cicd-bucket-eu-west-3
 
 PIP = .venv/bin/pip
@@ -30,9 +30,9 @@ test-remote:
 dynamodb-create-table:
 	aws dynamodb create-table --endpoint-url http://localhost:8080 --table-name books \
 		--key-schema AttributeName=author,KeyType=HASH AttributeName=title,KeyType=RANGE \
-		--attribute-definitions AttributeName=author,AttributeType=S AttributeName=title,AttributeType=S AttributeName=genre,AttributeType=S AttributeName=publication_date,AttributeType=S \
+		--attribute-definitions AttributeName=author,AttributeType=S AttributeName=title,AttributeType=S AttributeName=genre,AttributeType=S AttributeName=publication_date,AttributeType=S AttributeName=uuid,AttributeType=S \
 		--local-secondary-indexes "[{\"IndexName\":\"author-genre\",\"KeySchema\":[{\"AttributeName\":\"author\",\"KeyType\":\"HASH\"},{\"AttributeName\":\"genre\",\"KeyType\":\"RANGE\"}],\"Projection\":{\"ProjectionType\":\"ALL\"}}]" \
-		--global-secondary-indexes "[{\"IndexName\":\"genre-publication\",\"KeySchema\":[{\"AttributeName\":\"genre\",\"KeyType\":\"HASH\"},{\"AttributeName\":\"publication_date\",\"KeyType\":\"RANGE\"}],\"Projection\":{\"ProjectionType\":\"ALL\"}}]" \
+		--global-secondary-indexes "[{\"IndexName\":\"genre-publication\",\"KeySchema\":[{\"AttributeName\":\"genre\",\"KeyType\":\"HASH\"},{\"AttributeName\":\"publication_date\",\"KeyType\":\"RANGE\"}],\"Projection\":{\"ProjectionType\":\"ALL\"}},{\"IndexName\":\"uuid\",\"KeySchema\":[{\"AttributeName\":\"uuid\",\"KeyType\":\"HASH\"}],\"Projection\":{\"ProjectionType\":\"ALL\"}}]" \
 		--billing-mode PAY_PER_REQUEST
 
 dynamodb-start:

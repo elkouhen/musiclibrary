@@ -37,11 +37,14 @@ def create_book(event, context):
 def delete_book(event, context):
     logger.info(event)
 
-    body = json.loads(event["body"])
-
-    book = Book(author=body["author"], title=body["title"])
     book_dao = BookDao(
         dynamodb_resource=resources_mgr.dynamodb_resource,
         dynamodb_client=resources_mgr.dynamodb_client,
     )
-    book_dao.delete(book)
+    book_dao.delete(event["pathParameters"]["book_index"])
+
+    return {
+        "statusCode": 204,
+        "headers": {"Content-Type": "application/json"},
+        "body": "",
+    }
