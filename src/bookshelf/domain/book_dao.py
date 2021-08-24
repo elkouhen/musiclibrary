@@ -67,7 +67,7 @@ class BookDao:
         result = self.table.query(
             IndexName="genre-publication",
             KeyConditionExpression=Key("genre").eq(genre)
-                                   & Key("publication_date").eq(publication_date),
+            & Key("publication_date").eq(publication_date),
         )
 
         assert len(result["Items"]) <= 1

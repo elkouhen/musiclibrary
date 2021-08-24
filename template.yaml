@@ -48,6 +48,23 @@ Resources:
             Path: /books/{book_index}
             Method: DELETE
 
+  FindBooksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'bookshelf-find-books-fct'
+      Handler: src.bookshelf.handler.find_books
+      Runtime: python3.7
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: books
+      Events:
+        CreateBook:
+          Type: Api
+          Properties:
+            RestApiId: !Ref DefaultApi
+            Path: /books
+            Method: GET
+
   Table:
     Type: AWS::DynamoDB::Table
     Properties:

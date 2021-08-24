@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import pytest
 from bookshelf.core.resources_mgr import ResourcesMgr
 from bookshelf.domain.book import Book
 from bookshelf.domain.book_dao import BookDao
@@ -47,7 +46,7 @@ class TestBookDao:
         assert abook is not None
 
     def test_find_book_by_author_and_title_should_return_none_when_it_not_exist(
-            self,
+        self,
     ):
         # given
         book_dao = BookDao(
@@ -89,7 +88,7 @@ class TestBookDao:
         assert abook is None
 
     def test_find_book_by_author_and_publication_date_should_return_book_when_it_exists(
-            self,
+        self,
     ):
         # given
         book_dao = BookDao(
@@ -106,7 +105,7 @@ class TestBookDao:
         assert abook is not None
 
     def test_find_book_by_author_and_publication_date_should_return_none_when_it_not_exists(
-            self,
+        self,
     ):
         # given
         book_dao = BookDao(

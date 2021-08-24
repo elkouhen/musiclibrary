@@ -48,3 +48,20 @@ def delete_book(event, context):
         "headers": {"Content-Type": "application/json"},
         "body": "",
     }
+
+
+def find_books(event, context):
+    print(event)
+
+    book_dao = BookDao(
+        dynamodb_resource=resources_mgr.dynamodb_resource,
+        dynamodb_client=resources_mgr.dynamodb_client,
+    )
+
+    books = book_dao.find_by_genre_and_publication_date(event["queryParameters"]["genre"], event["queryParameters"]["publication_date"])
+
+    return {
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json"},
+        "body": [],
+    }
