@@ -26,8 +26,13 @@ test:
 test-remote:
 	pytest tests
 
-dynamo-create-table:
-	aws dynamodb create-table --endpoint-url http://localhost:8080 --table-name books --key-schema AttributeName=author,KeyType=HASH AttributeName=title,KeyType=RANGE --attribute-definitions AttributeName=author,AttributeType=S AttributeName=title,AttributeType=S --billing-mode PAY_PER_REQUEST
+dynamodb-create-table:
+	aws dynamodb create-table --endpoint-url http://localhost:8080 --table-name books \
+		--key-schema AttributeName=author,KeyType=HASH AttributeName=title,KeyType=RANGE \
+		--attribute-definitions AttributeName=author,AttributeType=S AttributeName=title,AttributeType=S AttributeName=genre,AttributeType=S AttributeName=publication_date,AttributeType=S \
+		--local-secondary-indexes "[{\"IndexName\":\"author-genre\",\"KeySchema\":[{\"AttributeName\":\"author\",\"KeyType\":\"HASH\"},{\"AttributeName\":\"genre\",\"KeyType\":\"RANGE\"}],\"Projection\":{\"ProjectionType\":\"ALL\"}}]" \
+		--global-secondary-indexes "[{\"IndexName\":\"genre-publication\",\"KeySchema\":[{\"AttributeName\":\"genre\",\"KeyType\":\"HASH\"},{\"AttributeName\":\"publication_date\",\"KeyType\":\"RANGE\"}],\"Projection\":{\"ProjectionType\":\"ALL\"}}]" \
+		--billing-mode PAY_PER_REQUEST
 
 dynamodb-start:
 	docker run --name dynamodb-shared -p 8080:8000 -d amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath .

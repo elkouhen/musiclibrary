@@ -1,5 +1,8 @@
 from src.bookshelf.domain.book import Book
 from boto3.dynamodb.conditions import Key
+import logging
+
+logger = logging.getLogger()
 
 
 class BookDao:
@@ -26,9 +29,11 @@ class BookDao:
         )
 
     def create(self, book: Book) -> None:
+        logger.info("[book] create")
         self.table.put_item(Item=book.to_dict())
 
     def update(self, book: Book) -> None:
+        logger.info("[book] update")
         self.table.update_item(
             Key={"author": book.author, "title": book.title},
             UpdateExpression="SET genre = :val1, publication_date = :val2",
@@ -39,6 +44,7 @@ class BookDao:
         )
 
     def find_by_author_and_title(self, book: Book) -> Book:
+        logger.info("[book] find_by_author_and_title")
         result = self.table.get_item(Key={"author": book.author, "title": book.title})
 
         print(result)
@@ -46,6 +52,7 @@ class BookDao:
         return result["Item"] if "Item" in result else None
 
     def find_by_author_and_genre(self, author, genre) -> Book:
+        logger.info("[book] find_by_author_and_genre")
         result = self.table.query(
             IndexName="author-genre",
             KeyConditionExpression=Key("author").eq(author) & Key("genre").eq(genre),
@@ -55,6 +62,7 @@ class BookDao:
         return result["Items"][0] if len(result["Items"]) == 1 else None
 
     def find_by_genre_and_publication_date(self, genre, publication_date) -> Book:
+        logger.info("[book] find_by_genre_and_publication_date")
         result = self.table.query(
             IndexName="genre-publication",
             KeyConditionExpression=Key("genre").eq(genre)
@@ -65,4 +73,5 @@ class BookDao:
         return result["Items"][0] if len(result["Items"]) == 1 else None
 
     def delete(self, book: Book) -> None:
+        logger.info("[book] delete")
         self.table.delete_item(Key={"author": book.author, "title": book.title})

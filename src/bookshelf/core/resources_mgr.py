@@ -1,5 +1,8 @@
 import boto3
 import os
+import logging
+
+logger = logging.getLogger()
 
 
 def singleton(class_):
@@ -17,16 +20,18 @@ def singleton(class_):
 class ResourcesMgr:
     def __init__(self):
 
-        if "AWS_SAM_LOCAL" in os.environ:
-            print("local aws resources")
-            endpoint_url = "http://172.17.0.1:8080"
+        print(os.environ.get("AWS_SAM_LOCAL"))
+
+        if os.environ.get("AWS_SAM_LOCAL") is not None:
+            logger.info("local aws resources")
+            endpoint_url = "http://localhost:8080"
             self.dynamodb_resource = boto3.resource(
-                "dynamodb", endpoint_url=f"http://{endpoint_url}"
+                "dynamodb", endpoint_url=f"{endpoint_url}"
             )
             self.dynamodb_client = boto3.client(
-                "dynamodb", endpoint_url=f"http://{endpoint_url}"
+                "dynamodb", endpoint_url=f"{endpoint_url}"
             )
         else:
-            print("remote aws resources")
+            logger.info("remote aws resources")
             self.dynamodb_resource = boto3.resource("dynamodb")
             self.dynamodb_client = boto3.client("dynamodb")
