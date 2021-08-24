@@ -57,7 +57,8 @@ class BookDao:
     def find_by_genre_and_publication_date(self, genre, publication_date) -> Book:
         result = self.table.query(
             IndexName="genre-publication",
-            KeyConditionExpression=Key("genre").eq(genre) & Key("publication_date").eq(publication_date),
+            KeyConditionExpression=Key("genre").eq(genre)
+            & Key("publication_date").eq(publication_date),
         )
 
         assert len(result["Items"]) <= 1

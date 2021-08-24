@@ -47,7 +47,7 @@ class TestBookDao:
         assert abook is not None
 
     def test_find_book_by_author_and_title_should_return_none_when_it_not_exist(
-            self,
+        self,
     ):
         # given
         book_dao = BookDao(
@@ -88,7 +88,9 @@ class TestBookDao:
         # then
         assert abook is None
 
-    def test_find_book_by_author_and_publication_date_should_return_book_when_it_exists(self):
+    def test_find_book_by_author_and_publication_date_should_return_book_when_it_exists(
+        self,
+    ):
         # given
         book_dao = BookDao(
             dynamodb_resource=resources_mgr.dynamodb_resource,
@@ -96,12 +98,16 @@ class TestBookDao:
         )
 
         # when
-        abook = book_dao.find_by_genre_and_publication_date(genre="SF", publication_date="1975")
+        abook = book_dao.find_by_genre_and_publication_date(
+            genre="SF", publication_date="1975"
+        )
 
         # then
         assert abook is not None
 
-    def test_find_book_by_author_and_publication_date_should_return_none_when_it_not_exists(self):
+    def test_find_book_by_author_and_publication_date_should_return_none_when_it_not_exists(
+        self,
+    ):
         # given
         book_dao = BookDao(
             dynamodb_resource=resources_mgr.dynamodb_resource,
@@ -109,7 +115,9 @@ class TestBookDao:
         )
 
         # when
-        abook = book_dao.find_by_genre_and_publication_date(genre="SF", publication_date="1974")
+        abook = book_dao.find_by_genre_and_publication_date(
+            genre="SF", publication_date="1974"
+        )
 
         # then
         assert abook is None
