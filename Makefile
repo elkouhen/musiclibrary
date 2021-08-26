@@ -11,13 +11,18 @@ stack-build:
 stack-deploy: stack-build
 	aws s3 cp spec/api-spec.yaml s3://$(CICD_BUCKET)/spec/api-spec.yaml
 	sam package --s3-bucket $(CICD_BUCKET) --output-template-file packaged.yaml
-	sam deploy packaged.yaml --capabilities CAPABILITY_IAM --parameter-overrides StageName=$(STAGE_NAME) --s3-bucket $(CICD_BUCKET) --stack-name $(STACK_NAME) --region $(AWS_REGION)
+	sam deploy packaged.yaml \
+		--capabilities CAPABILITY_IAM \
+		--parameter-overrides StageName=$(STAGE_NAME) \
+		--s3-bucket $(CICD_BUCKET) \
+		--stack-name $(STACK_NAME) \
+		--region $(AWS_REGION)
 
 stack-delete:
 	aws cloudformation delete-stack --stack-name $(STACK_NAME) --region $(AWS_REGION)
 
 test:
-	TABLE_NAME=helloworld-develop; pytest tests
+	TABLE_NAME=helloworld-$(STAGE_NAME); pytest tests
 
 bootstrap: .venv
 	$(PIP) install -e .
