@@ -46,7 +46,7 @@ class TestBookDao:
         assert abook is not None
 
     def test_find_book_by_author_and_title_should_return_none_when_it_not_exist(
-        self,
+            self,
     ):
         # given
         book_dao = BookDao(
@@ -82,13 +82,13 @@ class TestBookDao:
         )
 
         # when
-        abook = book_dao.find_by_author_and_genre(author="toto", genre="SF1")
+        book_list = book_dao.find_by_author_and_genre(author="toto", genre="SF1")
 
         # then
-        assert abook is None
+        assert len(book_list) == 0
 
     def test_find_book_by_author_and_publication_date_should_return_book_when_it_exists(
-        self,
+            self,
     ):
         # given
         book_dao = BookDao(
@@ -105,7 +105,7 @@ class TestBookDao:
         assert abook is not None
 
     def test_find_book_by_author_and_publication_date_should_return_none_when_it_not_exists(
-        self,
+            self,
     ):
         # given
         book_dao = BookDao(
@@ -114,9 +114,9 @@ class TestBookDao:
         )
 
         # when
-        abook = book_dao.find_by_genre_and_publication_date(
+        book_list = book_dao.find_by_genre_and_publication_date(
             genre="SF", publication_date="1974"
         )
 
         # then
-        assert abook is None
+        assert len(book_list) == 0
