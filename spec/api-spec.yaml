@@ -3,6 +3,14 @@ info:
   version: "1"
   title: "Bookshelf documentation"
 
+
+servers:
+  - url: "https://{api_id}.execute-api.eu-west-3.amazonaws.com/live"
+    variables: 
+      api_id:
+        default: api_id
+        description: set api id
+
 paths:
   /books:
     get:
@@ -111,6 +119,8 @@ components:
           type: string
     Empty:
       type: object
+
+    
 
 x-amazon-apigateway-request-validators: 
   validate_request: 
