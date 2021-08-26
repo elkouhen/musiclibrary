@@ -15,10 +15,7 @@ def create_hello_msg(event, context):
 
     body = json.loads(event["body"])
 
-    book = HelloMsg(
-        language=body["language"],
-        value=body["value"]
-    )
+    book = HelloMsg(language=body["language"], value=body["value"])
 
     dao = HelloMsgDao(
         dynamodb_resource=resources_mgr.dynamodb_resource,
@@ -44,9 +41,7 @@ def find_hello_msg(event, context):
         table_name=resources_mgr.table_name(),
     )
 
-    entities = dao.find_by_language(
-        event["queryStringParameters"]["language"]
-    )
+    entities = dao.find_by_language(event["queryStringParameters"]["language"])
 
     return {
         "statusCode": 200,
