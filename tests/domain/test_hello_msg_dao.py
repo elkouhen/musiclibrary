@@ -11,7 +11,7 @@ def book_dao_test():
     return HelloMsgDao(
         dynamodb_resource=resources_mgr.dynamodb_resource,
         dynamodb_client=resources_mgr.dynamodb_client,
-        table_name="hello_msg",
+        table_name=resources_mgr.table_name(),
     )
 
 
@@ -34,10 +34,8 @@ class TestBookDao:
         # given
         book_dao = book_dao_test()
 
-        entity = HelloMsg(language="fr", value="bonjour tout le monde")
-
         # when
-        abook = book_dao.find_by_language(entity)
+        abook = book_dao.find_by_language(language="fr")
 
         # then
         assert abook is not None
@@ -48,10 +46,8 @@ class TestBookDao:
         # given
         book_dao = book_dao_test()
 
-        entity = HelloMsg(language="fra", value="bonjour tout le monde")
-
         # when
-        abook = book_dao.find_by_language(entity)
+        abook = book_dao.find_by_language(language="fra")
 
         # then
         assert abook is None

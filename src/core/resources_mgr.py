@@ -48,4 +48,4 @@ class ResourcesMgr:
         if "TABLE_NAME" in os.environ:
             return os.environ["TABLE_NAME"]
 
-        return "books"
+        return "helloworld"
