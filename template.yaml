@@ -7,7 +7,7 @@ Resources:
   DefaultApi:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: develop
+      StageName: live
       DefinitionBody:
         'Fn::Transform':
           Name: 'AWS::Include'
@@ -30,7 +30,7 @@ Resources:
             RestApiId: !Ref DefaultApi
             Path: /books
             Method: POST
-      Environment: 
+      Environment:
         Variables:
           TABLE_NAME: !Ref Table
 
@@ -50,7 +50,7 @@ Resources:
             RestApiId: !Ref DefaultApi
             Path: /books/{book_index}
             Method: DELETE
-      Environment: 
+      Environment:
         Variables:
           TABLE_NAME: !Ref Table
 
@@ -70,7 +70,7 @@ Resources:
             RestApiId: !Ref DefaultApi
             Path: /books
             Method: GET
-      Environment: 
+      Environment:
         Variables:
           TABLE_NAME: !Ref Table
 

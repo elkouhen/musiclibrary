@@ -23,7 +23,7 @@ def create_book(event, context):
     book_dao = BookDao(
         dynamodb_resource=resources_mgr.dynamodb_resource,
         dynamodb_client=resources_mgr.dynamodb_client,
-        table_name=resources_mgr.table_name()
+        table_name=resources_mgr.table_name(),
     )
 
     book_dao.create(book)
@@ -41,7 +41,7 @@ def delete_book(event, context):
     book_dao = BookDao(
         dynamodb_resource=resources_mgr.dynamodb_resource,
         dynamodb_client=resources_mgr.dynamodb_client,
-        table_name=resources_mgr.table_name()
+        table_name=resources_mgr.table_name(),
     )
     book_dao.delete(event["pathParameters"]["book_id"])
 
@@ -58,7 +58,7 @@ def find_books(event, context):
     book_dao = BookDao(
         dynamodb_resource=resources_mgr.dynamodb_resource,
         dynamodb_client=resources_mgr.dynamodb_client,
-        table_name=resources_mgr.table_name()
+        table_name=resources_mgr.table_name(),
     )
 
     books = book_dao.find_by_genre_and_publication_date(

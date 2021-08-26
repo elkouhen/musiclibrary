@@ -11,7 +11,7 @@ def book_dao_test():
     return BookDao(
         dynamodb_resource=resources_mgr.dynamodb_resource,
         dynamodb_client=resources_mgr.dynamodb_client,
-        table_name="books"
+        table_name="books",
     )
 
 
@@ -45,7 +45,7 @@ class TestBookDao:
         assert abook is not None
 
     def test_find_book_by_author_and_title_should_return_none_when_it_not_exist(
-            self,
+        self,
     ):
         # given
         book_dao = book_dao_test()
@@ -78,7 +78,7 @@ class TestBookDao:
         assert len(book_list) == 0
 
     def test_find_book_by_author_and_publication_date_should_return_book_when_it_exists(
-            self,
+        self,
     ):
         # given
         book_dao = book_dao_test()
@@ -92,7 +92,7 @@ class TestBookDao:
         assert abook is not None
 
     def test_find_book_by_author_and_publication_date_should_return_none_when_it_not_exists(
-            self,
+        self,
     ):
         # given
         book_dao = book_dao_test()
