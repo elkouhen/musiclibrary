@@ -1,6 +1,3 @@
 {
-  "title": "coucou",
-  "author": "GoF",
-  "genre": "tech",
-  "publication_date": "1942"
+  "body": "{\n  \"title\": \"coucou\",\n  \"author\": \"GoF\",\n  \"genre\": \"tech\",\n  \"publication_date\": \"1942\"\n}"
 }

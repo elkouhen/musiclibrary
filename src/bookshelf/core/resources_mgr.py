@@ -42,3 +42,10 @@ class ResourcesMgr:
             logger.info("remote aws resources")
             self.dynamodb_resource = boto3.resource("dynamodb")
             self.dynamodb_client = boto3.client("dynamodb")
+
+    def table_name(self) -> str:
+
+        if "TABLE_NAME" in os.environ:
+            return os.environ["TABLE_NAME"]
+
+        return "books"

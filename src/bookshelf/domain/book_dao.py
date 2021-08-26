@@ -6,10 +6,10 @@ logger = logging.getLogger()
 
 
 class BookDao:
-    def __init__(self, dynamodb_resource, dynamodb_client):
+    def __init__(self, dynamodb_resource, dynamodb_client, table_name):
         self.dynamodb_resource = dynamodb_resource
         self.dynamodb_client = dynamodb_client
-        self.table = self.dynamodb_resource.Table("books")
+        self.table = self.dynamodb_resource.Table(table_name)
 
     def create(self, book: Book) -> None:
         logger.info("[book] create")
