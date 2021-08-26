@@ -1,6 +1,11 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: An AWS Serverless Specification template describing your function.
+
+Parameters:
+  StageName:
+    Type: String
+
 Resources:
 
   # An API definition for multiple serverless functions
@@ -14,62 +19,40 @@ Resources:
           Parameters:
             Location: !Sub s3://cicd-bucket-eu-west-3/spec/api-spec.yaml
 
-  CreateBookFunction:
+  FindHelloMsgFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub 'bookshelf-create-book-fct'
-      Handler: src.bookshelf.handler.create_book
+      Handler: src.handler.find_hello_msg
       Runtime: python3.7
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Table
       Events:
-        CreateBook:
+        FindHelloMsgEvent:
           Type: Api
           Properties:
             RestApiId: !Ref DefaultApi
-            Path: /books
-            Method: POST
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref Table
-
-  DeleteBookFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'bookshelf-delete-book-fct'
-      Handler: src.bookshelf.handler.delete_book
-      Runtime: python3.7
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Ref Table
-      Events:
-        CreateBook:
-          Type: Api
-          Properties:
-            RestApiId: !Ref DefaultApi
-            Path: /books/{book_index}
-            Method: DELETE
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref Table
-
-  FindBooksFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: !Sub 'bookshelf-find-books-fct'
-      Handler: src.bookshelf.handler.find_books
-      Runtime: python3.7
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Ref Table
-      Events:
-        CreateBook:
-          Type: Api
-          Properties:
-            RestApiId: !Ref DefaultApi
-            Path: /books
+            Path: /helloworld
             Method: GET
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Table
+
+  CreateHelloMsgFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src.handler.create_hello_msg
+      Runtime: python3.7
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Table
+      Events:
+        FindHelloMsgEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref DefaultApi
+            Path: /helloworld
+            Method: POST
       Environment:
         Variables:
           TABLE_NAME: !Ref Table
@@ -77,41 +60,17 @@ Resources:
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
+      TableName: !Sub "helloworld-${StageName}"
       BillingMode: PAY_PER_REQUEST
       KeySchema:
-        - AttributeName: author
+        - AttributeName: language
           KeyType: HASH
-        - AttributeName: title
-          KeyType: RANGE
       AttributeDefinitions:
-        - AttributeName: author
-          AttributeType: S
-        - AttributeName: title
-          AttributeType: S
-        - AttributeName: genre
-          AttributeType: S
-        - AttributeName: publication_date
+        - AttributeName: language
           AttributeType: S
         - AttributeName: uuid
           AttributeType: S
-      LocalSecondaryIndexes:
-        - IndexName: author-genre
-          KeySchema:
-            - AttributeName: author
-              KeyType: HASH
-            - AttributeName: genre
-              KeyType: RANGE
-          Projection:
-            ProjectionType: ALL
       GlobalSecondaryIndexes:
-        - IndexName: genre-publication
-          KeySchema:
-            - AttributeName: genre
-              KeyType: HASH
-            - AttributeName: publication_date
-              KeyType: RANGE
-          Projection:
-            ProjectionType: ALL
         - IndexName: uuid
           KeySchema:
             - AttributeName: uuid

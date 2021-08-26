@@ -1,28 +1,23 @@
 openapi: "3.0.1"
 info:
   version: "1"
-  title: "Bookshelf documentation"
+  title: "Helloworld documentation"
 
 
 servers:
   - url: "https://{api_id}.execute-api.eu-west-3.amazonaws.com/live"
-    variables: 
+    variables:
       api_id:
         default: api_id
         description: set api id
 
 paths:
-  /books:
+  /helloworld:
     get:
-      summary: "Find books by genre and publication date"
+      summary: "Find helloworld message by language"
       parameters:
         - in: query
-          name: genre
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: publication_date
+          name: language
           required: true
           schema:
             type: string
@@ -32,7 +27,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BookList"
+                $ref: "#/components/schemas/Helloworld"
       x-amazon-apigateway-auth:
         type: AWS_IAM
       x-amazon-apigateway-integration:
@@ -40,24 +35,24 @@ paths:
           default:
             statusCode: 200
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FindBooksFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FindHelloMsgFunction.Arn}/invocations"
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: aws_proxy
     post:
-      summary: "Create a book"
+      summary: "Create a Helloworld translation"
       requestBody:
         content:
-          application/json: 
-            schema: 
-              $ref: "#/components/schemas/Book"
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Helloworld"
       responses:
         201:
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Book"
+                $ref: "#/components/schemas/Helloworld"
       x-amazon-apigateway-request-validator: validate_request
       x-amazon-apigateway-auth:
         type: AWS_IAM
@@ -66,63 +61,24 @@ paths:
           default:
             statusCode: 201
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateBookFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateHelloMsgFunction.Arn}/invocations"
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: aws_proxy
-  /books/{book_id}:
-    delete:
-      summary: "Delete a book"
-      parameters:
-        - in: path
-          name: book_id
-          required: true
-          schema:
-            type: string
-      responses:
-        204:
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Empty"
-      x-amazon-apigateway-auth:
-        type: AWS_IAM
-      x-amazon-apigateway-integration:
-        responses:
-          default:
-            statusCode: 204
-        uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteBookFunction.Arn}/invocations"
-        passthroughBehavior: when_no_match
-        httpMethod: POST
-        type: aws_proxy
+
 
 components:
   schemas:
-    BookList:
-      type: array
-      items:
-        $ref: '#/components/schemas/Book'
-    Book:
+    Helloworld:
       type: object
       properties:
-        id:
+        language:
           type: string
-        author:
+        value:
           type: string
-        title:
-          type: string
-        genre:
-          type: string
-        publication_date:
-          type: string
-    Empty:
-      type: object
 
-    
 
-x-amazon-apigateway-request-validators: 
-  validate_request: 
+x-amazon-apigateway-request-validators:
+  validate_request:
     validateRequestBody: true
     validateRequestParameters: true
