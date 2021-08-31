@@ -9,6 +9,7 @@ Parameters:
 Resources:
 
 
+  # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-api.html
   DefaultApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -19,11 +20,13 @@ Resources:
           Parameters:
             Location: !Sub s3://cicd-bucket-eu-west-3/spec/api-spec.yaml
 
+  # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
   FindHelloMsgFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src.handler.find_hello_msg
       Runtime: python3.7
+      # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Table
@@ -57,6 +60,8 @@ Resources:
         Variables:
           TABLE_NAME: !Ref Table
 
+  # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-simpletable.html
+  # https://docs.aws.amazon.com/fr_fr/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
