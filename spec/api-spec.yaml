@@ -14,7 +14,7 @@ servers:
 paths:
   /helloworld:
     get:
-      summary: "Find helloworld message by language"
+      summary: "Find helloworld translation by language"
       parameters:
         - in: query
           name: language
