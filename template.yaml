@@ -18,15 +18,19 @@ Resources:
         'Fn::Transform':
           Name: 'AWS::Include'
           Parameters:
+            # Chemin vers la spec OpenAPI
             Location: !Sub s3://cicd-bucket-eu-west-3/spec/api-spec.yaml
 
   # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
   FindHelloMsgFunction:
     Type: AWS::Serverless::Function
     Properties:
+      # Chemin du handler de la lambda
       Handler: src.handler.find_hello_msg
+      # Runtime utilisé pour l'exécution de la lambda
       Runtime: python3.7
       # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+      # Droits IAM affectés à la l'exécution de la lambda
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Table
@@ -37,6 +41,7 @@ Resources:
             RestApiId: !Ref DefaultApi
             Path: /helloworld
             Method: GET
+      # Variables d'environnement
       Environment:
         Variables:
           TABLE_NAME: !Ref Table
