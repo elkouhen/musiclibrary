@@ -1,19 +1,36 @@
-=========
-bookshelf
-=========
+=============
+Music Library
+=============
 
 
-Add a short description here!
+Bibliothèque de gestion de chansons
 
 
-Description
-===========
 
-A longer description of your project goes here...
+Installation 
+============
+
+Installer CLI AWS  
+https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+
+Installer CLI SAM
+https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html
+
+Installer python
+Dépend de la distribution choisie
+
+Installer les librairies python
+
+pip install --upgrade pip invoke wget configobj psutil
 
 
-Note
-====
+Liens vers services
+===================
 
-This project has been set up using PyScaffold 3.3. For details and usage
-information on PyScaffold see https://pyscaffold.org/.
+Cloudformation https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-reference.html 
+
+SAM https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-resources-and-properties.html
+
+CLI SAM https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-command-reference.html
+
+Boto3 DynamoDB https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html
