@@ -67,7 +67,7 @@ def stack_delete(ctx, stage=_default_stage()):
 def test(ctx, stage=_default_stage()):
     with ctx.prefix(_activate()):
         os.environ["TABLE_NAME"] = f"{_project_name()}-{stage}"
-        ctx.run(f"TABLE_NAME={_project_name()}-{stage}; python3 -m pytest")
+        ctx.run(f"TABLE_NAME={_project_name()}-{stage}; python -m pytest")
 
 
 @task
