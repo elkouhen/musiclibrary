@@ -41,7 +41,7 @@ class TestBookDao:
         assert abook is not None
 
     def test_find_book_by_language_should_return_non_when_not_it_exists(
-        self,
+            self,
     ):
         # given
         book_dao = book_dao_test()
