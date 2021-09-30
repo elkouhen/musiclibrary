@@ -34,6 +34,7 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Table
+        - CloudWatchPutMetricPolicy: { }
       Events:
         ApiEvent:
           Type: Api
@@ -54,6 +55,7 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Table
+        - CloudWatchPutMetricPolicy: { }
       Events:
         ApiEvent:
           Type: Api
@@ -73,6 +75,7 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref Table
+        - CloudWatchPutMetricPolicy: { }
       Events:
         ApiEvent:
           Type: Api
@@ -94,6 +97,7 @@ Resources:
             TableName: !Ref Table
         - S3ReadPolicy:
             BucketName: !Sub "musiclibrary-eu-west-3-${StageName}"
+        - CloudWatchPutMetricPolicy: { }
       Environment:
         Variables:
           TABLE_NAME: !Ref Table

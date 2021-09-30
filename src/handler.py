@@ -2,6 +2,7 @@ from src.domain.song import Song
 from src.domain.song_dao import SongDao
 from src.services.csv_importer import CSVImporter
 from src.core.resources_mgr import ResourcesMgr
+from src.core.metrics import Metrics
 
 import logging
 import json
