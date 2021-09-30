@@ -73,17 +73,8 @@ Resources:
       TableName: !Sub "helloworld-${StageName}"
       BillingMode: PAY_PER_REQUEST
       KeySchema:
-        - AttributeName: language
+        - AttributeName: uuid
           KeyType: HASH
       AttributeDefinitions:
-        - AttributeName: language
-          AttributeType: S
         - AttributeName: uuid
           AttributeType: S
-      GlobalSecondaryIndexes:
-        - IndexName: uuid
-          KeySchema:
-            - AttributeName: uuid
-              KeyType: HASH
-          Projection:
-            ProjectionType: ALL

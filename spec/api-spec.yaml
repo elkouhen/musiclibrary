@@ -12,33 +12,8 @@ servers:
         description: set api id
 
 paths:
+
   /helloworld:
-    get:
-      summary: "Find helloworld translation by language"
-      parameters:
-        - in: query
-          name: language
-          required: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Helloworld"
-      x-amazon-apigateway-auth:
-        type: AWS_IAM
-      x-amazon-apigateway-integration:
-        responses:
-          default:
-            statusCode: 200
-        uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FindHelloMsgFunction.Arn}/invocations"
-        passthroughBehavior: when_no_match
-        httpMethod: POST
-        type: aws_proxy
     post:
       summary: "Create a Helloworld translation"
       requestBody:
@@ -65,7 +40,33 @@ paths:
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: aws_proxy
-
+  /helloworld/{uuid}:
+    get:
+      summary: "Find helloworld translation by uuid"
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Helloworld"
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FindHelloMsgFunction.Arn}/invocations"
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: aws_proxy
 
 components:
   schemas:

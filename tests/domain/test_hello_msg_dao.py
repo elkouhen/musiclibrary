@@ -16,38 +16,27 @@ def book_dao_test():
 
 
 class TestBookDao:
-    @classmethod
-    def setup_class(cls):
-        book_dao = book_dao_test()
 
-        book = HelloMsg(language="fr", value="bonjour tout le monde")
-
-        book_dao.create(book)
-
-    @classmethod
-    def teardown_class(cls):
-        book_dao = book_dao_test()
-
-        book_dao.delete("fr")
-
-    def test_find_book_by_language_should_return_hello_msg_when_it_exists(self):
+    def test_find_book_by_uuid_should_return_hello_msg_when_it_exists(self):
         # given
         book_dao = book_dao_test()
+        book = HelloMsg(language="fr", value="bonjour tout le monde")
+        book_dao.create(book)
 
         # when
-        abook = book_dao.find_by_language(language="fr")
+        abook = book_dao.find_by_uuid(uuid=book.uuid)
 
         # then
         assert abook is not None
+        book_dao.delete(uuid=book.uuid)
 
-    def test_find_book_by_language_should_return_non_when_not_it_exists(
+    def test_find_book_by_uuid_should_return_none_when_not_it_exists(
             self,
     ):
         # given
-        book_dao = book_dao_test()
 
         # when
-        abook = book_dao.find_by_language(language="fra")
+        abook = book_dao_test().find_by_uuid(uuid="pipouuid")
 
         # then
         assert abook is None

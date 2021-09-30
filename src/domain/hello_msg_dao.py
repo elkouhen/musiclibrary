@@ -15,16 +15,16 @@ class HelloMsgDao:
         logger.info("[entity] create")
         self.table.put_item(Item=entity.to_dict())
 
-    def delete(self, language) -> None:
+    def delete(self, uuid) -> None:
         logger.info("[entity] delete")
 
-        self.table.delete_item(Key={"language": language})
+        self.table.delete_item(Key={"uuid": uuid})
 
         return None
 
-    def find_by_language(self, language) -> HelloMsg:
+    def find_by_uuid(self, uuid) -> HelloMsg:
         logger.info("[entity] entity")
-        result = self.table.get_item(Key={"language": language})
+        result = self.table.get_item(Key={"uuid": uuid})
 
         print(result)
 
