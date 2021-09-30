@@ -22,6 +22,10 @@ def create_song(event, context):
 
     try:
 
+        resources_mgr.metrics.put_metric(
+            namespace="musiclibrary", operation="create", is_exception=False
+        )
+
         song = Song(author=body["author"], title=body["title"], genre=body["genre"], date=body["date"])
         dao.create(song)
 
@@ -40,6 +44,11 @@ def create_song(event, context):
 
 def delete_song(event, context):
     try:
+
+        resources_mgr.metrics.put_metric(
+            namespace="musiclibrary", operation="delete", is_exception=False
+        )
+
         dao.delete(uuid=event["pathParameters"]["song_id"])
 
     except BaseException as e:
@@ -57,6 +66,11 @@ def delete_song(event, context):
 
 def find_by_author_and_title(event, context):
     try:
+
+        resources_mgr.metrics.put_metric(
+            namespace="musiclibrary", operation="find", is_exception=False
+        )
+
         entities = dao.find_by_author_and_title(event["queryStringParameters"]["author"],
                                                 event["queryStringParameters"]["title"])
 
@@ -75,6 +89,11 @@ def find_by_author_and_title(event, context):
 
 def import_csv(event, context):
     try:
+
+        resources_mgr.metrics.put_metric(
+            namespace="musiclibrary", operation="import", is_exception=False
+        )
+
         CSVImporter(song_dao=dao).import_file(
             event["Records"][0]["s3"]["bucket"]["name"],
             event["Records"][0]["s3"]["object"]["key"],
