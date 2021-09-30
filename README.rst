@@ -10,6 +10,17 @@ Bibliothèque de gestion de chansons
 Installation 
 ============
 
+Installer la cli_git_
+
+.. _cli_git: https://git-scm.com/downloads
+
+Vérifier la version du client GIT
+
+.. code-block::
+    prompt > git --version
+    git version 2.31.1.windows.1
+
+
 Installer la cli_aws_
 
 .. _cli_aws: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
@@ -42,7 +53,7 @@ Vérifier la version de python
 
 Installer les librairies python
 
-pip install --upgrade pip invoke wget configobj psutil
+pip install --upgrade pip invoke wget configobj psutil --user
 
 
 Liens vers services
