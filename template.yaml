@@ -72,11 +72,6 @@ Resources:
     Properties:
       TableName: !Sub "musiclibrary-${StageName}"
       BillingMode: PAY_PER_REQUEST
-      KeySchema:
-        - AttributeName: author
-          KeyType: HASH
-        - AttributeName: title
-          KeyType: RANGE
       AttributeDefinitions:
         - AttributeName: uuid
           AttributeType: S
@@ -86,6 +81,11 @@ Resources:
           AttributeType: S
         - AttributeName: title
           AttributeType: S
+      KeySchema:
+        - AttributeName: author
+          KeyType: HASH
+        - AttributeName: title
+          KeyType: RANGE
       LocalSecondaryIndexes:
         - IndexName: author-date
           KeySchema:
