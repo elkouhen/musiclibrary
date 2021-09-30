@@ -15,6 +15,15 @@ prompt> git --version
 git version 2.31.1.windows.1
 ```
 
+Installer [Docker](https://docs.docker.com/get-docker/) 
+
+Vérifier la version de docker
+
+```
+prompt> docker --version
+Docker version 20.10.8, build 3967b7d
+```
+
 Installer la [CLI AWS](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 
 
@@ -48,8 +57,7 @@ Installer les librairies python
 pip install --upgrade pip invoke wget configobj psutil --user
 
 
-Liens vers la documentation
-===================
+##  Liens vers la documentation
 
 Cloudformation https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-reference.html 
 
