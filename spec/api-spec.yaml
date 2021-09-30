@@ -1,7 +1,7 @@
 openapi: "3.0.1"
 info:
   version: "1"
-  title: "Helloworld documentation"
+  title: "Music Library documentation"
 
 
 servers:
@@ -12,22 +12,52 @@ servers:
         description: set api id
 
 paths:
-
-  /helloworld:
+  /songs:
+    get:
+      summary: "Find song by author and title"
+      parameters:
+        - in: query
+          name: author
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: title
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Song"
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: 200
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FindSongsFunction.Arn}/invocations"
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: aws_proxy
     post:
-      summary: "Create a Helloworld translation"
+      summary: "Create a song"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Helloworld"
+              $ref: "#/components/schemas/Song"
       responses:
         201:
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Helloworld"
+                $ref: "#/components/schemas/Song"
       x-amazon-apigateway-request-validator: validate_request
       x-amazon-apigateway-auth:
         type: AWS_IAM
@@ -40,43 +70,56 @@ paths:
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: aws_proxy
-  /helloworld/{uuid}:
-    get:
-      summary: "Find helloworld translation by uuid"
+  /songs/{song_id}:
+    delete:
+      summary: "Delete a song"
       parameters:
         - in: path
-          name: uuid
+          name: song_id
           required: true
           schema:
             type: string
       responses:
-        200:
+        204:
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Helloworld"
+                $ref: "#/components/schemas/Empty"
       x-amazon-apigateway-auth:
         type: AWS_IAM
       x-amazon-apigateway-integration:
         responses:
           default:
-            statusCode: 200
+            statusCode: 204
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FindSongFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DeleteSongFunction.Arn}/invocations"
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: aws_proxy
 
 components:
   schemas:
-    Helloworld:
+    SongList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Song'
+    Song:
       type: object
       properties:
-        language:
+        id:
           type: string
-        value:
+        author:
           type: string
+        title:
+          type: string
+        genre:
+          type: string
+        publication_date:
+          type: string
+    Empty:
+      type: object
+
 
 
 x-amazon-apigateway-request-validators:

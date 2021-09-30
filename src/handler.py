@@ -15,7 +15,7 @@ def create_song(event, context):
 
     body = json.loads(event["body"])
 
-    book = Song(language=body["language"], value=body["value"])
+    song = Song(author=body["author"], title=body["title"], genre=body["genre"], date=body["date"])
 
     dao = SongDao(
         dynamodb_resource=resources_mgr.dynamodb_resource,
@@ -23,16 +23,16 @@ def create_song(event, context):
         table_name=resources_mgr.table_name(),
     )
 
-    dao.create(book)
+    dao.create(song)
 
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "application/json"},
-        "body": book.to_json(),
+        "body": song.to_json(),
     }
 
 
-def find_song(event, context):
+def delete_song(event, context):
     print(event)
 
     dao = SongDao(
@@ -41,7 +41,26 @@ def find_song(event, context):
         table_name=resources_mgr.table_name(),
     )
 
-    entities = dao.find_by_language(event["queryStringParameters"]["language"])
+    dao.delete(uuid=event["pathParameters"]["song_id"])
+
+    return {
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json"},
+        "body": "",
+    }
+
+
+def find_by_author_and_title(event, context):
+    print(event)
+
+    dao = SongDao(
+        dynamodb_resource=resources_mgr.dynamodb_resource,
+        dynamodb_client=resources_mgr.dynamodb_client,
+        table_name=resources_mgr.table_name(),
+    )
+
+    entities = dao.find_by_author_and_title(event["queryStringParameters"]["author"],
+                                            event["queryStringParameters"]["title"])
 
     return {
         "statusCode": 200,

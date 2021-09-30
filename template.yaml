@@ -22,11 +22,11 @@ Resources:
             Location: !Sub s3://cicd-bucket-eu-west-3/spec/api-spec.yaml
 
   # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
-  FindSongFunction:
+  FindSongsFunction:
     Type: AWS::Serverless::Function
     Properties:
       # Chemin du handler de la lambda
-      Handler: src.handler.find_song
+      Handler: src.handler.find_by_author_and_title
       # Runtime utilisé pour l'exécution de la lambda
       Runtime: python3.7
       # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
@@ -39,7 +39,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref DefaultApi
-            Path: /helloworld
+            Path: /songs
             Method: GET
       # Variables d'environnement
       Environment:
@@ -59,8 +59,27 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref DefaultApi
-            Path: /helloworld
+            Path: /songs
             Method: POST
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Table
+
+  DeleteSongFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src.handler.delete_song
+      Runtime: python3.7
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Table
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref DefaultApi
+            Path: /songs/{song_id}
+            Method: DELETE
       Environment:
         Variables:
           TABLE_NAME: !Ref Table
