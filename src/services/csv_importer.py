@@ -10,20 +10,28 @@ class CSVImporter:
         self.song_dao = song_dao
 
     def import_file(self, bucket: str, key: str):
+
+        print("import file")
+
         with tempfile.NamedTemporaryFile("w") as f:
             boto3.client("s3").download_file(bucket, key, f.name)
 
             with open(f.name, newline="") as csvfile:
                 reader = csv.DictReader(csvfile, delimiter=";")
 
+                print("parse file")
+
                 for row in reader:
 
                     try:
+
+                        print("handle row")
+
                         song = Song(
                             author=row["author"],
                             title=row["title"],
                             genre=row["genre"],
-                            publication_date=row["publication_date"],
+                            date=row["date"],
                         )
 
                         self.song_dao.create(song)

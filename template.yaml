@@ -96,7 +96,7 @@ Resources:
             BucketName: !Sub "musiclibrary-eu-west-3-${StageName}"
       Environment:
         Variables:
-          TABLE_NAME: !Sub "songs-${StageName}"
+          TABLE_NAME: !Ref Table
 
   CSVBucket:
     Type: 'AWS::S3::Bucket'
