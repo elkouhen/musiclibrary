@@ -2,6 +2,7 @@ import csv
 import tempfile
 
 import boto3
+import logging
 from src.domain.song import Song
 
 
@@ -36,4 +37,4 @@ class CSVImporter:
 
                         self.song_dao.create(song)
                     except BaseException as e:
-                        print(str(e))
+                        logging.critical(e, exc_info=True)
