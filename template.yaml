@@ -121,7 +121,7 @@ Resources:
       Principal: s3.amazonaws.com
       SourceArn: !Sub 'arn:aws:s3:::musiclibrary-eu-west-3-${StageName}'
       SourceAccount: !Ref AWS::AccountId
-      
+
   # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-simpletable.html
   # https://docs.aws.amazon.com/fr_fr/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
   Table:
