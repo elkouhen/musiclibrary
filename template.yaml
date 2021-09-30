@@ -22,11 +22,11 @@ Resources:
             Location: !Sub s3://cicd-bucket-eu-west-3/spec/api-spec.yaml
 
   # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
-  FindHelloMsgFunction:
+  FindSongFunction:
     Type: AWS::Serverless::Function
     Properties:
       # Chemin du handler de la lambda
-      Handler: src.handler.find_hello_msg
+      Handler: src.handler.find_song
       # Runtime utilisé pour l'exécution de la lambda
       Runtime: python3.7
       # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
@@ -46,10 +46,10 @@ Resources:
         Variables:
           TABLE_NAME: !Ref Table
 
-  CreateHelloMsgFunction:
+  CreateSongFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src.handler.create_hello_msg
+      Handler: src.handler.create_song
       Runtime: python3.7
       Policies:
         - DynamoDBCrudPolicy:
@@ -70,7 +70,7 @@ Resources:
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub "helloworld-${StageName}"
+      TableName: !Sub "musiclibrary-${StageName}"
       BillingMode: PAY_PER_REQUEST
       KeySchema:
         - AttributeName: uuid

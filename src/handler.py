@@ -1,5 +1,5 @@
-from src.domain.hello_msg import HelloMsg
-from src.domain.hello_msg_dao import HelloMsgDao
+from src.domain.song import Song
+from src.domain.song_dao import SongDao
 from src.core.resources_mgr import ResourcesMgr
 
 import logging
@@ -10,14 +10,14 @@ print("create dynamodb resources")
 resources_mgr = ResourcesMgr()
 
 
-def create_hello_msg(event, context):
+def create_song(event, context):
     print(event)
 
     body = json.loads(event["body"])
 
-    book = HelloMsg(language=body["language"], value=body["value"])
+    book = Song(language=body["language"], value=body["value"])
 
-    dao = HelloMsgDao(
+    dao = SongDao(
         dynamodb_resource=resources_mgr.dynamodb_resource,
         dynamodb_client=resources_mgr.dynamodb_client,
         table_name=resources_mgr.table_name(),
@@ -32,10 +32,10 @@ def create_hello_msg(event, context):
     }
 
 
-def find_hello_msg(event, context):
+def find_song(event, context):
     print(event)
 
-    dao = HelloMsgDao(
+    dao = SongDao(
         dynamodb_resource=resources_mgr.dynamodb_resource,
         dynamodb_client=resources_mgr.dynamodb_client,
         table_name=resources_mgr.table_name(),

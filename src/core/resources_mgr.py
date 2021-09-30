@@ -27,4 +27,4 @@ class ResourcesMgr:
         if "TABLE_NAME" in os.environ:
             return os.environ["TABLE_NAME"]
 
-        return "helloworld"
+        return "musiclibrary"

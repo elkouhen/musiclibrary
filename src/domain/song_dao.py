@@ -1,17 +1,17 @@
 import logging
 
-from src.domain.hello_msg import HelloMsg
+from src.domain.song import Song
 
 logger = logging.getLogger()
 
 
-class HelloMsgDao:
+class SongDao:
     def __init__(self, dynamodb_resource, dynamodb_client, table_name):
         self.dynamodb_resource = dynamodb_resource
         self.dynamodb_client = dynamodb_client
         self.table = self.dynamodb_resource.Table(table_name)
 
-    def create(self, entity: HelloMsg) -> None:
+    def create(self, entity: Song) -> None:
         logger.info("[entity] create")
         self.table.put_item(Item=entity.to_dict())
 
@@ -22,7 +22,7 @@ class HelloMsgDao:
 
         return None
 
-    def find_by_uuid(self, uuid) -> HelloMsg:
+    def find_by_uuid(self, uuid) -> Song:
         logger.info("[entity] entity")
         result = self.table.get_item(Key={"uuid": uuid})
 

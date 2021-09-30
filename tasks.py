@@ -6,7 +6,7 @@ from invoke import task
 
 
 def _project_name():
-    return "helloworld"
+    return "song"
 
 
 def _default_stage():
@@ -66,7 +66,7 @@ def stack_delete(ctx, stage=_default_stage()):
 @task
 def test(ctx, stage=_default_stage()):
     with ctx.prefix(_activate()):
-        os.environ["TABLE_NAME"] = f"{_project_name()}-{stage}"
+        os.environ["TABLE_NAME"] = f"musiclibrary-{stage}"
         ctx.run(f"python -m pytest")
 
 
