@@ -34,9 +34,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Song"
       security:
-        - authorizer: [ ]
-      x-amazon-apigateway-auth:
-        type: AWS_IAM
+        - sigv4: [ ]
       x-amazon-apigateway-integration:
         responses:
           default:
@@ -61,10 +59,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Song"
       security:
-        - authorizer: [ ]
+        - sigv4: [ ]
       x-amazon-apigateway-request-validator: validate_request
-      x-amazon-apigateway-auth:
-        type: AWS_IAM
       x-amazon-apigateway-integration:
         responses:
           default:
@@ -91,9 +87,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Empty"
       security:
-        - authorizer: [ ]
-      x-amazon-apigateway-auth:
-        type: AWS_IAM
+        - sigv4: [ ]
       x-amazon-apigateway-integration:
         responses:
           default:
@@ -131,6 +125,12 @@ components:
       type: object
 
 securityDefinitions:
+  sigv4:
+    type: apiKey
+    name: Authorization
+    in: header
+    x-amazon-apigateway-authtype: awsSigv4
+
   authorizer:
     type: apiKey
     name: Authorization
@@ -138,7 +138,7 @@ securityDefinitions:
     x-amazon-apigateway-authtype: 'custom'
     x-amazon-apigateway-authorizer:
       type: token
-      authorizerUri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:musiclibrary-develop-AuthorizerFunction/invocations
+      authorizerUri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${AuthorizerFunction}/invocations
 
 
 x-amazon-apigateway-request-validators:
