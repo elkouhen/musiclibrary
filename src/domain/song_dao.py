@@ -51,7 +51,7 @@ class SongDao:
         return result["Item"] if "Item" in result else None
 
     def find_by_author_and_date(self, author, date):
-        logging.info("[song] find_by_author_and_genre")
+        logging.info("[song] find_by_author_and_date")
 
         result = self.table.query(
             IndexName="author-date",
