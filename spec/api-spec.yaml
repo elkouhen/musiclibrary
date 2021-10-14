@@ -28,9 +28,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Helloworld"
+      security:
+        - sigv4: [ ]
       x-amazon-apigateway-request-validator: validate_request
-      x-amazon-apigateway-auth:
-        type: AWS_IAM
       x-amazon-apigateway-integration:
         responses:
           default:
@@ -56,8 +56,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Helloworld"
-      x-amazon-apigateway-auth:
-        type: AWS_IAM
+      security:
+        - sigv4: [ ]
       x-amazon-apigateway-integration:
         responses:
           default:
@@ -78,6 +78,12 @@ components:
         value:
           type: string
 
+securityDefinitions:
+  sigv4:
+    type: apiKey
+    name: Authorization
+    in: header
+    x-amazon-apigateway-authtype: awsSigv4
 
 x-amazon-apigateway-request-validators:
   validate_request:
