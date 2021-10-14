@@ -104,10 +104,6 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Song'
-    AuthenticationToken:
-      properties:
-        token:
-          type: string
     Song:
       type: object
       properties:
