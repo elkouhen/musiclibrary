@@ -5,7 +5,8 @@ Description: An AWS Serverless Specification template describing your function.
 Parameters:
   StageName:
     Type: String
-
+  CicdBucket:
+    Type: String
 Resources:
 
 
@@ -19,7 +20,7 @@ Resources:
           Name: 'AWS::Include'
           Parameters:
             # Chemin vers la spec OpenAPI
-            Location: !Sub s3://cicd-bucket-eu-west-3/spec/api-spec.yaml
+            Location: !Sub "s3://${CicdBucket}/spec/api-spec.yaml"
 
   # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
   FindSongFunction:
@@ -39,7 +40,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref DefaultApi
-            Path: /helloworld
+            Path: /songs
             Method: GET
       # Variables d'environnement
       Environment:
@@ -59,7 +60,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref DefaultApi
-            Path: /helloworld
+            Path: /songs
             Method: POST
       Environment:
         Variables:

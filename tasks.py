@@ -6,7 +6,7 @@ from invoke import task
 
 
 def _project_name():
-    return "song"
+    return "musiclibrary"
 
 
 def _default_stage():
@@ -15,10 +15,6 @@ def _default_stage():
 
 def _aws_region():
     return "eu-west-3"
-
-
-def _cicd_bucket():
-    return "cicd-bucket-eu-west-3"
 
 
 def _venv_dir():
@@ -45,14 +41,14 @@ def stack_build(ctx):
 
 
 @task(pre=[stack_build])
-def stack_deploy(ctx, cicd_bucket=_cicd_bucket(), stage=_default_stage()):
+def stack_deploy(ctx, cicd_bucket, stage=_default_stage()):
     with ctx.prefix(_activate()):
         ctx.run(f"aws s3 cp spec/api-spec.yaml s3://{cicd_bucket}/spec/api-spec.yaml")
         ctx.run(f"sam package --s3-bucket {cicd_bucket} --output-template-file packaged.yaml")
         ctx.run(f"sam deploy packaged.yaml "
                 f"--capabilities CAPABILITY_IAM "
                 f"--parameter-overrides "
-                f"StageName={stage} "
+                f"StageName={stage} CicdBucket={cicd_bucket}"
                 f"--s3-bucket {cicd_bucket} "
                 f"--stack-name {_project_name()}-{stage} "
                 f"--region {_aws_region()} ")
@@ -66,7 +62,7 @@ def stack_delete(ctx, stage=_default_stage()):
 @task
 def test(ctx, stage=_default_stage()):
     with ctx.prefix(_activate()):
-        os.environ["TABLE_NAME"] = f"musiclibrary-{stage}"
+        os.environ["TABLE_NAME"] = f"{_project_name()}-{stage}"
         ctx.run(f"python -m pytest")
 
 
