@@ -68,15 +68,3 @@ def find_by_author_and_title(event, context):
         "headers": {"Content-Type": "application/json"},
         "body": json.dumps(entities, default=lambda entity: entity.to_json()),
     }
-
-def import_csv(event, context):
-    dao = SongDao(
-        dynamodb_resource=resources_mgr.dynamodb_resource,
-        dynamodb_client=resources_mgr.dynamodb_client,
-        table_name=resources_mgr.table_name(),
-    )
-
-    CSVImporter(song_dao=dao).import_file(
-        event["Records"][0]["s3"]["bucket"]["name"],
-        event["Records"][0]["s3"]["object"]["key"],
-    )
