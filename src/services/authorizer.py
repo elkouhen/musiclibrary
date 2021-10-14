@@ -3,9 +3,9 @@ class Authorizer:
     def authenticate(self, token):
 
         if token == "mysecretpassword":
-            return make_authorization("Allow")
+            return self.make_authorization("Allow")
         else:
-            return make_authorization("Deny")
+            return self.make_authorization("Deny")
 
     def make_authorization(self, effect):
         return {
@@ -16,7 +16,7 @@ class Authorizer:
                     {
                         "Action": "execute-api:Invoke",
                         "Effect": effect,
-                        "Resource": "arn:aws:execute-api:eu-west-3:*"
+                        "Resource": "arn:aws:lambda:eu-west-3:*"
                     }
                 ]
             }

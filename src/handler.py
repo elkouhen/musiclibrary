@@ -1,7 +1,7 @@
 from src.domain.song import Song
 from src.domain.song_dao import SongDao
 from src.services.csv_importer import CSVImporter
-from src.services.authenticator import Authenticator
+from src.services.authorizer import Authorizer
 from src.core.resources_mgr import ResourcesMgr
 from src.core.metrics import Metrics
 
@@ -110,4 +110,4 @@ def import_csv(event, context):
 
 def authorizer(event, context):
     print(event)
-    return Authorizer().authenticate(event["authorization_token"])
+    return Authorizer().authenticate(event["authorizationToken"])
