@@ -48,7 +48,7 @@ def stack_deploy(ctx, prefix_bucket, cicd_bucket, stage=_default_stage()):
         ctx.run(f"sam deploy packaged.yaml "
                 f"--capabilities CAPABILITY_IAM "
                 f"--parameter-overrides "
-                f"StageName={stage} BucketPrefix={prefix_bucket} CicdBucket={cicd_bucket} "
+                f"StageName={stage} BucketPrefix={prefix_bucket} "
                 f"--s3-bucket {cicd_bucket} "
                 f"--stack-name {_project_name()}-{stage} "
                 f"--region {_aws_region()} ")
