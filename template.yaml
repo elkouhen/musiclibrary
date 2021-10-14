@@ -5,7 +5,7 @@ Description: An AWS Serverless Specification template describing your function.
 Parameters:
   StageName:
     Type: String
-  BucketPrefix:
+  CicdBucket:
     Type: String
 
 Resources:
