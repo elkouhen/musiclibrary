@@ -17,10 +17,6 @@ def _aws_region():
     return "eu-west-3"
 
 
-def _cicd_bucket():
-    return "cicd-bucket-eu-west-3"
-
-
 def _venv_dir():
     if platform.system() == "Windows":
         return "venv"
@@ -45,7 +41,7 @@ def stack_build(ctx):
 
 
 @task(pre=[stack_build])
-def stack_deploy(ctx, cicd_bucket=_cicd_bucket(), stage=_default_stage()):
+def stack_deploy(ctx, cicd_bucket, stage=_default_stage()):
     with ctx.prefix(_activate()):
         ctx.run(f"aws s3 cp spec/api-spec.yaml s3://{cicd_bucket}/spec/api-spec.yaml")
         ctx.run(f"sam package --s3-bucket {cicd_bucket} --output-template-file packaged.yaml")
