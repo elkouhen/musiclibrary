@@ -14,8 +14,8 @@ class Authorizer:
                 "Version": "2012-10-17",
                 "Statement": [
                     {
-                        "Action": "execute-api:Invoke",
                         "Effect": effect,
+                        "Action": "execute-api:Invoke",
                         "Resource": "arn:aws:lambda:eu-west-3:*"
                     }
                 ]

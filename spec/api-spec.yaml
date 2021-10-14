@@ -33,6 +33,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Song"
+      security:
+        - authorizer: []
       x-amazon-apigateway-auth:
         type: AWS_IAM
       x-amazon-apigateway-integration:
@@ -58,6 +60,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Song"
+      security:
+        - authorizer: []
       x-amazon-apigateway-request-validator: validate_request
       x-amazon-apigateway-auth:
         type: AWS_IAM
@@ -86,6 +90,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Empty"
+      security:
+        - authorizer: []
       x-amazon-apigateway-auth:
         type: AWS_IAM
       x-amazon-apigateway-integration:
@@ -128,9 +134,10 @@ components:
       type: apiKey
       name: Authorization
       in: header
+      x-amazon-apigateway-authtype: 'custom'
       x-amazon-apigateway-authorizer:
         type: token
-        authorizerUri: arn:aws:apigateway:eu-west-3:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-3:629923658207:function:musiclibrary-develop-AuthorizerFunction-QFEinOL6hqbR/invocations
+        authorizerUri: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:musiclibrary-${StageName}-AuthorizerFunction/invocations
 
 
 x-amazon-apigateway-request-validators:
