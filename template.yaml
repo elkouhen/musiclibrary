@@ -22,7 +22,7 @@ Resources:
             Location: !Sub s3://cicd-bucket-eu-west-3/spec/api-spec.yaml
       Auth:
         Authorizers:
-          Authorizer:
+          authorizer:
             FunctionArn: !GetAtt AuthorizerFunction.Arn
 
   # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html

@@ -110,4 +110,9 @@ def import_csv(event, context):
 
 def authorizer(event, context):
     print(event)
-    return Authorizer().authenticate(event["authorizationToken"])
+
+    lambda_function_arn = context.invoked_function_arn
+    aws_account_id = lambda_function_arn.split(":")[4]
+    print(aws_account_id)
+
+    return Authorizer().authenticate(account=aws_account_id, token=event["authorizationToken"])

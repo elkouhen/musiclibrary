@@ -1,11 +1,15 @@
 class Authorizer:
 
-    def authenticate(self, token):
+    def authenticate(self, account, token):
 
         if token == "mysecretpassword":
-            return self.make_authorization("Allow")
+            authorization = self.make_authorization("Allow")
+            print(authorization)
+            return authorization
         else:
-            return self.make_authorization("Deny")
+            authorization = self.make_authorization("Deny")
+            print(authorization)
+            return authorization
 
     def make_authorization(self, effect):
         return {
