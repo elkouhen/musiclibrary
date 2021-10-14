@@ -87,44 +87,6 @@ Resources:
         Variables:
           TABLE_NAME: !Ref Table
 
-  ImportSongCsvFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src.handler.import_csv
-      Runtime: python3.7
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Ref Table
-        - S3ReadPolicy:
-            BucketName: !Sub "${BucketPrefix}-${StageName}"
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref Table
-
-  CSVBucket:
-    Type: 'AWS::S3::Bucket'
-    DeletionPolicy: Retain
-    Properties:
-      BucketName: !Sub "${BucketPrefix}-${StageName}"
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: "s3:ObjectCreated:*"
-            Function: !GetAtt ImportSongCsvFunction.Arn
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: suffix
-                    Value: .csv
-
-  ProcessingLambdaPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: 'lambda:InvokeFunction'
-      FunctionName: !Ref ImportSongCsvFunction
-      Principal: s3.amazonaws.com
-      SourceArn: !Sub 'arn:aws:s3:::${BucketPrefix}-${StageName}'
-      SourceAccount: !Ref AWS::AccountId
-
   # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-simpletable.html
   # https://docs.aws.amazon.com/fr_fr/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
   Table:
