@@ -1,6 +1,7 @@
 from src.domain.song import Song
 from src.domain.song_dao import SongDao
 from src.services.csv_importer import CSVImporter
+from src.services.authenticator import Authenticator
 from src.core.resources_mgr import ResourcesMgr
 from src.core.metrics import Metrics
 
@@ -105,3 +106,8 @@ def import_csv(event, context):
         resources_mgr.metrics.put_metric(
             namespace="musiclibrary", operation="import", is_exception=True
         )
+
+
+def authorizer(event, context):
+    print(event)
+    return Authorizer().authenticate(event["authorization_token"])

@@ -20,6 +20,10 @@ Resources:
           Parameters:
             # Chemin vers la spec OpenAPI
             Location: !Sub s3://cicd-bucket-eu-west-3/spec/api-spec.yaml
+      Auth:
+        Authorizers:
+          Authorizer:
+            FunctionArn: !GetAtt AuthorizerFunction.Arn
 
   # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
   FindSongsFunction:
@@ -101,6 +105,16 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref Table
+
+  AuthorizerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "musiclibrary-${StageName}-AuthorizerFunction"
+      Handler: src.handler.authorizer
+      Runtime: python3.7
+      Policies:
+        - CloudWatchPutMetricPolicy: { }
+
 
   CSVBucket:
     Type: 'AWS::S3::Bucket'

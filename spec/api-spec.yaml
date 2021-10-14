@@ -104,6 +104,10 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Song'
+    AuthenticationToken:
+      properties:
+        token:
+          type: string
     Song:
       type: object
       properties:
@@ -119,10 +123,18 @@ components:
           type: string
     Empty:
       type: object
-
+  securityDefinitions:
+    authorizer:
+      type: apiKey
+      name: Authorization
+      in: header
+      x-amazon-apigateway-authorizer:
+        type: token
+        authorizerUri: arn:aws:apigateway:eu-west-3:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-3:629923658207:function:musiclibrary-develop-AuthorizerFunction-QFEinOL6hqbR/invocations
 
 
 x-amazon-apigateway-request-validators:
   validate_request:
     validateRequestBody: true
     validateRequestParameters: true
+
