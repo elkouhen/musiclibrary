@@ -33,8 +33,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Song"
-      x-amazon-apigateway-auth:
-        type: AWS_IAM
+      security:
+        - sigv4: [ ]
       x-amazon-apigateway-integration:
         responses:
           default:
@@ -58,9 +58,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Song"
+      security:
+        - sigv4: [ ]
       x-amazon-apigateway-request-validator: validate_request
-      x-amazon-apigateway-auth:
-        type: AWS_IAM
       x-amazon-apigateway-integration:
         responses:
           default:
@@ -86,8 +86,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Empty"
-      x-amazon-apigateway-auth:
-        type: AWS_IAM
+      security:
+        - sigv4: [ ]
       x-amazon-apigateway-integration:
         responses:
           default:
@@ -120,6 +120,12 @@ components:
     Empty:
       type: object
 
+securityDefinitions:
+  sigv4:
+    type: apiKey
+    name: Authorization
+    in: header
+    x-amazon-apigateway-authtype: awsSigv4
 
 
 x-amazon-apigateway-request-validators:
