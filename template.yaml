@@ -166,3 +166,56 @@ Resources:
               KeyType: HASH
           Projection:
             ProjectionType: ALL
+
+  LambdaCreationAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmDescription: musiclibrary create tracking
+        AlarmName: MusicLibraryCreateAlarm
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Threshold: 10
+        Metrics:
+        - Id: m1
+          MetricStat:
+            Metric:
+              MetricName: create
+              Namespace: musiclibrary
+            Period: 60
+            Stat: Sum
+
+  LambdaExceptionTrackingAlarm:
+      Type: AWS::CloudWatch::Alarm
+      Properties:
+        AlarmDescription: musiclibrary exception tracking
+        AlarmName: MusicLibraryExceptionAlarm
+        ComparisonOperator: GreaterThanOrEqualToThreshold
+        EvaluationPeriods: 1
+        Threshold: 2
+        Metrics:
+        - Expression: SUM([m1, m2, m3])
+          Id: sum_metric
+        - Id: m1
+          MetricStat:
+            Metric:
+              MetricName: create-exception
+              Namespace: musiclibrary
+            Period: 60
+            Stat: Sum
+          ReturnData: False
+        - Id: m2
+          MetricStat:
+            Metric:
+              MetricName: delete-exception
+              Namespace: musiclibrary
+            Period: 60
+            Stat: Sum
+          ReturnData: False
+        - Id: m3
+          MetricStat:
+            Metric:
+              MetricName: find-exception
+              Namespace: musiclibrary
+            Period: 60
+            Stat: Sum
+          ReturnData: False
