@@ -40,7 +40,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref DefaultApi
-            Path: /helloworld
+            Path: /helloworld/{uuid}
             Method: GET
       # Variables d'environnement
       Environment:
