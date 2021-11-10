@@ -1,5 +1,5 @@
 import boto3
-from aws_xray_sdk.core import patch_all
+
 from src.core.metrics import Metrics
 import os
 import logging
@@ -26,6 +26,7 @@ class ResourcesMgr:
         self.dynamodb_client = boto3.client("dynamodb")
 
         if patch:
+            from aws_xray_sdk.core import patch_all
             patch_all()
 
         if enable_cloudwatch:
