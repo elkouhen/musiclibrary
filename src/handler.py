@@ -41,7 +41,7 @@ def find_song(event, context):
         table_name=resources_mgr.table_name(),
     )
 
-    entities = dao.find_by_language(event["queryStringParameters"]["language"])
+    entities = dao.find_by_uuid(event["pathParameters"]["uuid"])
 
     return {
         "statusCode": 200,

@@ -40,7 +40,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref DefaultApi
-            Path: /songs
+            Path: /songs/{uuid}
             Method: GET
       # Variables d'environnement
       Environment:
