@@ -115,7 +115,7 @@ components:
           type: string
         genre:
           type: string
-        publication_date:
+        date:
           type: string
     Empty:
       type: object
