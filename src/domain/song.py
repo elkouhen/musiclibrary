@@ -7,7 +7,7 @@ class Song:
         self.author = kwargs["author"]
         self.title = kwargs["title"]
         self.genre = kwargs["genre"]
-        self.genre = kwargs["date"]
+        self.date = kwargs["date"]
 
         self.uuid = str(uuid.uuid4())
 
