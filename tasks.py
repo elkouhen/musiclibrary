@@ -9,12 +9,8 @@ def _project_name():
     return "helloworld"
 
 
-def _default_stage():
-    return "develop"
-
-
 def _aws_region():
-    return "eu-west-3"
+    return "eu-west-1"
 
 
 def _venv_dir():
@@ -41,7 +37,7 @@ def stack_build(ctx):
 
 
 @task(pre=[stack_build])
-def stack_deploy(ctx, cicd_bucket, stage=_default_stage()):
+def stack_deploy(ctx, cicd_bucket, stage):
     with ctx.prefix(_activate()):
         ctx.run(f"aws s3 cp spec/api-spec.yaml s3://{cicd_bucket}/spec/api-spec.yaml")
         ctx.run(f"sam package --s3-bucket {cicd_bucket} --output-template-file packaged.yaml")
@@ -55,12 +51,12 @@ def stack_deploy(ctx, cicd_bucket, stage=_default_stage()):
 
 
 @task
-def stack_delete(ctx, stage=_default_stage()):
+def stack_delete(ctx, stage):
     ctx.run(f"aws cloudformation delete-stack --stack-name {_project_name()}-{stage} --region {_aws_region()}")
 
 
 @task
-def test(ctx, stage=_default_stage()):
+def test(ctx, stage):
     with ctx.prefix(_activate()):
         os.environ["TABLE_NAME"] = f"{_project_name()}-{stage}"
         ctx.run(f"python -m pytest")
